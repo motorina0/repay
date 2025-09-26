@@ -85,6 +85,14 @@ async def get_job_config_paginated(
     )
 
 
+async def get_all_enabled_job_configs() -> list[JobConfig]:
+    # todo: cache
+    return await db.fetchall(
+        "SELECT * FROM repay.job_config WHERE enabled = true",
+        model=JobConfig,
+    )
+
+
 async def update_job_config(data: JobConfig) -> JobConfig:
     await db.update("repay.job_config", data)
     return data

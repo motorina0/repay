@@ -39,6 +39,23 @@ class JobConfig(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+    def match_cron(self, dt: datetime) -> bool:
+        print("### self", [self.minutes, self.hours, self.day_of_month, self.month, self.day_of_week])
+        print("### cron", [dt.minute, dt.hour, dt.day, dt.month, dt.weekday()])
+        if not self.enabled:
+            return False
+        if self.minutes is not None and self.minutes != dt.minute:
+            return False
+        if self.hours is not None and self.hours != dt.hour:
+            return False
+        if self.day_of_month is not None and self.day_of_month != dt.day:
+            return False
+        if self.month is not None and self.month != dt.month:
+            return False
+        if self.day_of_week is not None and self.day_of_week != dt.weekday():
+            return False
+        return True
+
 
 class JobConfigFilters(FilterModel):
     __search_fields__ = [

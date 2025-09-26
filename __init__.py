@@ -5,7 +5,7 @@ from lnbits.tasks import create_permanent_unique_task
 from loguru import logger
 
 from .crud import db
-from .tasks import wait_for_paid_invoices
+from .tasks import check_jobs_task, wait_for_paid_invoices
 from .views import repay_generic_router
 from .views_api import repay_api_router
 
@@ -34,6 +34,8 @@ def repay_stop():
 
 def repay_start():
     task = create_permanent_unique_task("ext_repay", wait_for_paid_invoices)
+    scheduled_tasks.append(task)
+    task = create_permanent_unique_task("ext_repay_check_job", check_jobs_task)
     scheduled_tasks.append(task)
 
 

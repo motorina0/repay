@@ -299,6 +299,14 @@
         hint="Detailed description  (optional)"
       ></q-input>
 
+      <q-checkbox
+        filled
+        dense
+        v-model.trim="jobConfigFormDialog.data.enabled"
+        label="Enabled"
+        hint="Enable or disable the job"
+      ></q-checkbox>
+
       <div class="row">
         <div class="col-12 q-mb-sm"><q-separator></q-separator></div>
         <div class="col-4">
@@ -310,7 +318,6 @@
             :options="monthOptions"
             v-model.trim="jobConfigFormDialog.data.month"
             label="Month"
-            hint="Allowed Values 1-12 or JAN-DEC "
             type="number"
             class="q-pr-sm"
           ></q-select>
@@ -324,7 +331,6 @@
             :options="dayOfWeekOptions"
             v-model.trim="jobConfigFormDialog.data.day_of_week"
             label="Day of week"
-            hint="Allowed Values  0-6 or SUN-SAT "
             type="number"
             class="q-pr-sm"
           ></q-select>

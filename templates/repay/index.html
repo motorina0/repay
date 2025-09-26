@@ -300,6 +300,8 @@
       ></q-input>
 
       <div class="row">
+        <div class="col-12 q-mb-sm"><q-separator></q-separator></div>
+
         <div class="col-4">
           <q-input
             filled
@@ -320,6 +322,9 @@
             label="Day of month"
             hint="Allowed Values 1-31 "
             type="number"
+            min="1"
+            max="31"
+            step="1"
             class="q-pr-sm"
           ></q-input>
         </div>
@@ -346,6 +351,9 @@
             label="Hours"
             hint="Allowed Values 0-23 "
             type="number"
+            min="0"
+            max="23"
+            step="1"
             class="q-pr-sm"
           ></q-input>
         </div>
@@ -357,9 +365,13 @@
             label="Minutes"
             hint="Allowed Values 0-59 "
             type="number"
+            min="0"
+            max="59"
+            step="1"
             class="q-pr-sm"
           ></q-input>
         </div>
+        <div class="col-12 q-mt-sm"><q-separator></q-separator></div>
       </div>
 
       <q-input

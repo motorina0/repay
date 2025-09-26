@@ -1,0 +1,422 @@
+<!--/////////////////////////////////////////////////-->
+<!--//PAGE FOR THE EXTENSIONS BACKEND IN LNBITS//////-->
+<!--/////////////////////////////////////////////////-->
+
+
+{% extends "base.html" %}
+
+
+{% from "macros.jinja" import window_vars with context %} {% block scripts %} {{
+window_vars(user) }}
+
+
+<script src="{{ static_url_for('repay/static', path='js/index.js') }}"></script>
+
+
+{% endblock %} {% block page %}
+<div class="row q-col-gutter-md">
+  <div class="col-12 col-md-8 col-lg-7 q-gutter-y-md">
+    
+    <q-card
+      id="settingsCard"
+    >
+      <q-card-section
+        class=""
+      >
+        <div class="row">
+          <div class="col">
+            <span class="text-h5">RePay</span>
+            <q-btn
+              @click="showSettingsDataForm()"
+              v-if="true"
+              unelevated
+              split
+              color="primary"
+              icon="settings"
+              class="float-right"
+            >
+            </q-btn>
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+    
+
+    <div class="q-mt-lg">
+      <span class="text-h5">Job Config</span>
+    </div>
+    <q-card
+      id="jobConfigCard"
+      class="q-mt-xs"
+    >
+      <q-card-section
+        class=""
+      >
+        <div class="row items-center no-wrap q-mb-md">
+          <div class="col">
+            <q-input
+              :label="$t('search')"
+              dense
+              class="q-pr-xl"
+              v-model="jobConfigTable.search"
+            >
+              <template v-slot:before>
+                <q-icon name="search"> </q-icon>
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  v-if="jobConfigTable.search !== ''"
+                  name="close"
+                  @click="jobConfigTable.search = ''"
+                  class="cursor-pointer"
+                >
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-auto">
+            
+            <q-btn
+              @click="showNewJobConfigForm()"
+              unelevated
+              split
+              color="primary"
+            >
+              New Job Config
+            </q-btn>
+            
+            <q-btn
+              flat
+              color="grey"
+              icon="file_download"
+              @click="exportJobConfigCSV"
+              >CSV</q-btn
+            >
+          </div>
+        </div>
+        <q-table
+          dense
+          flat
+          :rows="jobConfigList"
+          row-key="id"
+          :columns="jobConfigTable.columns"
+          v-model:pagination="jobConfigTable.pagination"
+          :loading="jobConfigTable.loading"
+          @request="getJobConfig"
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th auto-width></q-th>
+              <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                ${ col.label }
+              </q-th>
+            </q-tr>
+          </template>
+
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td auto-width>
+                 
+                <q-btn
+                  flat
+                  dense
+                  size="xs"
+                  @click="showEditJobConfigForm(props.row)"
+                  icon="edit"
+                  color="light-blue"
+                  class="q-mr-sm"
+                >
+                  <q-tooltip> Edit </q-tooltip>
+                </q-btn>
+                
+                <q-btn
+                  flat
+                  dense
+                  size="xs"
+                  @click="deleteJobConfig(props.row.id)"
+                  icon="cancel"
+                  color="pink"
+                  class="q-mr-sm"
+                >
+                  <q-tooltip> Delete </q-tooltip>
+                </q-btn>
+              </q-td>
+
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <div v-if="col.field == 'updated_at'">
+                  <span v-text="dateFromNow(col.value)"> </span>
+                </div>
+                <div v-else>${ col.value }</div>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </q-card-section>
+    </q-card>
+
+    <div class="q-mt-lg">
+      <span class="text-h5">Job Run</span>
+    </div>
+    <q-card
+      id="jobRunCard"
+      class="q-mt-xs"
+    >
+      <q-card-section
+        class=""
+      >
+        <div class="row items-center no-wrap q-mb-md">
+          <div class="col">
+            <q-input
+              :label="$t('search')"
+              dense
+              class="q-pr-xl"
+              v-model="jobRunTable.search"
+            >
+              <template v-slot:before>
+                <q-icon name="search"> </q-icon>
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  v-if="jobRunTable.search !== ''"
+                  name="close"
+                  @click="jobRunTable.search = ''"
+                  class="cursor-pointer"
+                >
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-auto">
+            <q-select
+              filled
+              dense
+              v-model="jobRunFormDialog.jobConfig"
+              :options="[{label: 'All Job Config', value: ''}, ...jobConfigList.map(x => ({label: x.name || x.id, value: x.id}))]"
+              label="Job Config"
+              class="q-mb-md"
+            ></q-select>
+          </div>
+          <div class="col-auto">
+            <q-btn
+              flat
+              color="grey"
+              icon="file_download"
+              class="q-mb-md"
+              @click="exportJobRunCSV"
+              >CSV</q-btn
+            >
+          </div>
+        </div>
+        <q-table
+          dense
+          flat
+          :rows="jobRunList"
+          row-key="id"
+          :columns="jobRunTable.columns"
+          v-model:pagination="jobRunTable.pagination"
+          :loading="jobRunTable.loading"
+          @request="getJobRun"
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th auto-width></q-th>
+              <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                ${ col.label }
+              </q-th>
+            </q-tr>
+          </template>
+
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td auto-width>
+                
+                <q-btn
+                  flat
+                  dense
+                  size="xs"
+                  @click="deleteJobRun(props.row.id)"
+                  icon="cancel"
+                  color="pink"
+                  class="q-mr-sm"
+                >
+                  <q-tooltip> Delete </q-tooltip>
+                </q-btn>
+              </q-td>
+
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <div v-if="col.field == 'updated_at'">
+                  <span v-text="dateFromNow(col.value)"> </span>
+                </div>
+                <div v-else>${ col.value }</div>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </q-card-section>
+    </q-card>
+  </div>
+  
+  <div class="col-12 col-md-4 col-lg-5 q-gutter-y-md">
+    <q-card>
+      <q-card-section>
+        <h6 class="text-subtitle1 q-my-none">
+          {{SITE_TITLE}} RePay
+        </h6>
+        <p>Schedule repetitive payments</p>
+      </q-card-section>
+      <q-card-section class="q-pa-none">
+        <q-separator></q-separator>
+        <q-list>
+          {% include "repay/_api_docs.html" %}
+          <q-separator></q-separator>
+          {% include "repay/_repay.html" %}
+        </q-list>
+      </q-card-section>
+    </q-card>
+  </div>
+  
+
+  <!--/////////////////////////////////////////////////-->
+  <!--//////////////FORM DIALOG////////////////////////-->
+  <!--/////////////////////////////////////////////////-->
+
+  <q-dialog v-model="settingsFormDialog.show" position="top">
+    <q-card
+      v-if="settingsFormDialog.show"
+      class="q-pa-lg q-pt-xl lnbits__dialog-card q-col-gutter-md"
+    >
+      <span class="text-h5">Settings</span>
+       
+<q-input
+  filled
+  dense
+  v-model.trim="settingsFormDialog.data.name"
+  label="Name"
+  hint="  (optional)"
+></q-input>
+ 
+      <div class="row q-mt-lg">
+        <q-btn @click="updateSettings" unelevated color="primary" type="submit"
+          >Update</q-btn
+        >
+        <q-btn v-close-popup flat color="grey" class="q-ml-auto">Cancel</q-btn>
+      </div>
+    </q-card>
+  </q-dialog>
+
+  <q-dialog v-model="jobConfigFormDialog.show" position="top">
+    <q-card
+      v-if="jobConfigFormDialog.show"
+      class="q-pa-lg q-pt-md lnbits__dialog-card q-col-gutter-md"
+    >
+      <span class="text-h5">Job Config</span>
+
+       
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.name"
+  label="Name"
+  hint="The name of the cron job "
+></q-input>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.description"
+  label="Description"
+  hint="Detailed description  (optional)"
+></q-input>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.minutes"
+  label="Minutes"
+  hint="Allowed Values 0-59 "
+  type="number"
+></q-input>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.hours"
+  label="Hours"
+  hint="Allowed Values 0-23 "
+  type="number"
+></q-input>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.day_of_month"
+  label="Day of month"
+  hint="Allowed Values 1-31 "
+  type="number"
+></q-input>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.month"
+  label="Month"
+  hint="Allowed Values 1-12 or JAN-DEC "
+  type="number"
+></q-input>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.day_of_week"
+  label="Day of week"
+  hint="Allowed Values  0-6 or SUN-SAT "
+  type="number"
+></q-input>
+  
+<q-select
+  filled
+  dense
+  emit-value
+  v-model="jobConfigFormDialog.data.pay_from_wallet_id"
+  :options="g.user.walletOptions"
+  label="Wallet  * "
+></q-select>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.pay_to"
+  label="Pay to"
+  hint="Pay to LNAddress or LNURLP "
+></q-input>
+  
+<q-select
+  filled
+  dense
+  v-model="jobConfigFormDialog.data.currency"
+  label="Currency"
+  hint="The conversion will take place at the time of payment "
+  :options="currencyOptions"
+></q-select>
+  
+<q-input
+  filled
+  dense
+  v-model.trim="jobConfigFormDialog.data.amount"
+  label="Amount"
+  hint="Amount in currency "
+  type="number"
+></q-input>
+ 
+      <div class="row q-mt-lg">
+        <q-btn @click="saveJobConfig" unelevated color="primary">
+          <span v-if="jobConfigFormDialog.data.id">Update</span>
+          <span v-else>Create</span>
+        </q-btn>
+        <q-btn v-close-popup flat color="grey" class="q-ml-auto">Cancel</q-btn>
+      </div>
+    </q-card>
+  </q-dialog>
+
+</div>
+{% endblock %}

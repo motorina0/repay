@@ -1,0 +1,240 @@
+{
+    "id": "repay",
+    "name": "RePay",
+    "stub_version": "v0.2.0",
+    "short_description": "Schedule repetitive payments",
+    "description": "Pay from one of your wallets to a target destination (lnaddress, lnurlp or another wallet).\n\nAdvanced scheduler options (Minutes, Hours, Day of month, Month, Day of week)",
+    "owner_data": {
+        "name": "JobConfig",
+        "editable": true,
+        "fields": [
+            {
+                "name": "name",
+                "type": "str",
+                "label": "Name",
+                "hint": "The name of the cron job",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "description",
+                "type": "text",
+                "label": "Description",
+                "hint": "Detailed description",
+                "optional": true,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "minutes",
+                "type": "int",
+                "label": "Minutes",
+                "hint": "Allowed Values 0-59",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "hours",
+                "type": "int",
+                "label": "Hours",
+                "hint": "Allowed Values 0-23",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "day_of_month",
+                "type": "int",
+                "label": "Day of month",
+                "hint": "Allowed Values 1-31",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "month",
+                "type": "int",
+                "label": "Month",
+                "hint": "Allowed Values 1-12 or JAN-DEC",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "day_of_week",
+                "type": "int",
+                "label": "Day of week",
+                "hint": "Allowed Values  0-6 or SUN-SAT",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "pay_from_wallet_id",
+                "type": "wallet",
+                "label": "Wallet",
+                "hint": "Pay from this wallet",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "pay_to",
+                "type": "text",
+                "label": "Pay to",
+                "hint": "Pay to LNAddress or LNURLP",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "currency",
+                "type": "currency",
+                "label": "Currency",
+                "hint": "The conversion will take place at the time of payment",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "amount",
+                "type": "float",
+                "label": "Amount",
+                "hint": "Amount in currency",
+                "optional": false,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            }
+        ]
+    },
+    "client_data": {
+        "name": "JobRun",
+        "editable": false,
+        "fields": [
+            {
+                "name": "name",
+                "type": "str",
+                "label": "Job Name",
+                "hint": "",
+                "optional": true,
+                "editable": false,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "success",
+                "type": "bool",
+                "label": "Success",
+                "hint": "Job ran ok or not",
+                "optional": false,
+                "editable": false,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "status_text",
+                "type": "text",
+                "label": "Status Text",
+                "hint": "The output of the job ran",
+                "optional": true,
+                "editable": false,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "duration_seconds",
+                "type": "int",
+                "label": "Duration Seconds",
+                "hint": "Duration of the job in seconds",
+                "optional": false,
+                "editable": false,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            },
+            {
+                "name": "payment_hash",
+                "type": "text",
+                "label": "Payment Hash",
+                "hint": "Payment hash",
+                "optional": false,
+                "editable": false,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            }
+        ]
+    },
+    "settings_data": {
+        "name": "Settings",
+        "editable": true,
+        "fields": [
+            {
+                "name": "name",
+                "type": "str",
+                "label": "Name",
+                "hint": "",
+                "optional": true,
+                "editable": true,
+                "searchable": true,
+                "sortable": true,
+                "fields": []
+            }
+        ],
+        "enabled": true,
+        "type": "user"
+    },
+    "public_page": {
+        "has_public_page": false,
+        "owner_data_fields": {
+            "name": "",
+            "description": ""
+        },
+        "client_data_fields": {
+            "public_inputs": []
+        },
+        "action_fields": {
+            "generate_action": false,
+            "generate_payment_logic": false,
+            "wallet_id": "",
+            "currency": "",
+            "amount": "",
+            "amount_source": null,
+            "paid_flag": ""
+        }
+    },
+    "preview_action": {
+        "is_preview_mode": false,
+        "is_settings_preview": false,
+        "is_owner_data_preview": false,
+        "is_client_data_preview": false,
+        "is_public_page_preview": false
+    }
+}

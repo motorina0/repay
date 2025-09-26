@@ -46,6 +46,13 @@ window.app = Vue.createApp({
             sortable: true,
           },
           {
+            name: "enabled",
+            align: "left",
+            label: "Enabled",
+            field: "enabled",
+            sortable: true,
+          },
+          {
             name: "minutes",
             align: "left",
             label: "Minutes",

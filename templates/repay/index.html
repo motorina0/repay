@@ -331,54 +331,58 @@
         </div>
 
         <div class="col-4">
-          <q-input
+          <q-select
             filled
             dense
+            emit-value
+            map-options
+            :options="dayOfMonthOptions"
             v-model.trim="jobConfigFormDialog.data.day_of_month"
             label="Day of month"
-            hint="Allowed Values 1-31 "
-            type="number"
-            min="1"
-            max="31"
-            step="1"
+            hint="Allowed Values 1-31"
             class="q-pr-sm"
-          ></q-input>
+          ></q-select>
         </div>
       </div>
 
       <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-          <q-input
+          <q-select
             filled
             dense
+            emit-value
+            map-options
+            :options="hourOptions"
             v-model.trim="jobConfigFormDialog.data.hours"
             label="Hours"
             hint="Allowed Values 0-23 "
-            type="number"
-            min="0"
-            max="23"
-            step="1"
             class="q-pr-sm"
-          ></q-input>
+          ></q-select>
         </div>
         <div class="col-4">
-          <q-input
+          <q-select
             filled
             dense
+            emit-value
+            map-options
+            :options="minuteOptions"
             v-model.trim="jobConfigFormDialog.data.minutes"
             label="Minutes"
             hint="Allowed Values 0-59 "
-            type="number"
-            min="0"
-            max="59"
-            step="1"
             class="q-pr-sm"
-          ></q-input>
+          ></q-select>
         </div>
         <div class="col-12 q-mt-sm"><q-separator></q-separator></div>
       </div>
-
+      <q-select
+        filled
+        dense
+        emit-value
+        v-model="jobConfigFormDialog.data.pay_from_wallet_id"
+        :options="g.user.walletOptions"
+        label="Wallet  * "
+      ></q-select>
       <q-input
         filled
         dense

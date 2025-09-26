@@ -7,12 +7,12 @@ from pydantic import BaseModel, Field
 ########################### Job Config ############################
 class CreateJobConfig(BaseModel):
     name: str
-    description: str | None
-    minutes: int
-    hours: int
-    day_of_month: int
-    month: int
-    day_of_week: int
+    description: str | None = None
+    minutes: int | None = None
+    hours: int | None = None
+    day_of_month: int | None = None
+    month: int | None = None
+    day_of_week: int | None = None
     pay_from_wallet_id: str
     pay_to: str
     currency: str = "sat"
@@ -25,10 +25,10 @@ class JobConfig(BaseModel):
     name: str
     description: str | None
     minutes: int
-    hours: int
-    day_of_month: int
-    month: int
-    day_of_week: int
+    hours: int | None = None
+    day_of_month: int | None = None
+    month: int | None = None
+    day_of_week: int | None = None
     pay_from_wallet_id: str
     pay_to: str
     currency: str = "sat"

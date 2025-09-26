@@ -201,7 +201,7 @@ window.app = Vue.createApp({
         },
       },
       dayOfWeekOptions: [
-        { label: "Any day of week", value: "" },
+        { label: "Any", value: null },
         { label: "Sunday", value: 0 },
         { label: "Monday", value: 1 },
         { label: "Tuesday", value: 2 },
@@ -211,7 +211,7 @@ window.app = Vue.createApp({
         { label: "Saturday", value: 6 },
       ],
       monthOptions: [
-        { label: "Any month", value: "" },
+        { label: "Any", value: null },
         { label: "January", value: 1 },
         { label: "February", value: 2 },
         { label: "March", value: 3 },
@@ -224,6 +224,27 @@ window.app = Vue.createApp({
         { label: "October", value: 10 },
         { label: "November", value: 11 },
         { label: "December", value: 12 },
+      ],
+      dayOfMonthOptions: [
+        { label: "Any", value: null },
+        ...Array.from({ length: 31 }, (_, i) => ({
+          label: (i + 1).toString(),
+          value: i + 1,
+        })),
+      ],
+      hourOptions: [
+        { label: "Any", value: null },
+        ...Array.from({ length: 24 }, (_, i) => ({
+          label: i.toString(),
+          value: i,
+        })),
+      ],
+      minuteOptions: [
+        { label: "Any", value: null },
+        ...Array.from({ length: 60 }, (_, i) => ({
+          label: i.toString(),
+          value: i,
+        })),
       ],
     };
   },

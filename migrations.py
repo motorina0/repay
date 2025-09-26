@@ -42,6 +42,7 @@ async def m002_job_config(db):
             pay_to TEXT NOT NULL,
             currency TEXT NOT NULL,
             amount REAL NOT NULL,
+            enabled BOOLEAN,
             created_at TIMESTAMP NOT NULL DEFAULT {db.timestamp_now},
             updated_at TIMESTAMP NOT NULL DEFAULT {db.timestamp_now}
         );

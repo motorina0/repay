@@ -17,14 +17,15 @@ class CreateJobConfig(BaseModel):
     pay_to: str
     currency: str = "sat"
     amount: float
+    enabled: bool | None = None
 
 
 class JobConfig(BaseModel):
     id: str
     user_id: str
     name: str
-    description: str | None
-    minutes: int
+    description: str | None = None
+    minutes: int | None = None
     hours: int | None = None
     day_of_month: int | None = None
     month: int | None = None
@@ -33,6 +34,7 @@ class JobConfig(BaseModel):
     pay_to: str
     currency: str = "sat"
     amount: float
+    enabled: bool | None = None
 
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -51,6 +53,7 @@ class JobConfigFilters(FilterModel):
         "pay_to",
         "currency",
         "amount",
+        "enabled",
     ]
 
     __sort_fields__ = [
@@ -65,6 +68,7 @@ class JobConfigFilters(FilterModel):
         "pay_to",
         "currency",
         "amount",
+        "enabled",
         "created_at",
         "updated_at",
     ]

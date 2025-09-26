@@ -122,7 +122,7 @@ class JobRunFilters(FilterModel):
 
 ############################ Settings #############################
 class ExtensionSettings(BaseModel):
-    name: str | None
+    name: str | None = None
 
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

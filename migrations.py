@@ -21,8 +21,6 @@ async def m001_extension_settings(db):
     )
 
 
-
-
 async def m002_job_config(db):
     """
     Initial job config table.

@@ -17,7 +17,6 @@ class CreateJobConfig(BaseModel):
     pay_to: str
     currency: str = "sat"
     amount: float
-    
 
 
 class JobConfig(BaseModel):
@@ -34,14 +33,24 @@ class JobConfig(BaseModel):
     pay_to: str
     currency: str = "sat"
     amount: float
-    
+
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class JobConfigFilters(FilterModel):
     __search_fields__ = [
-        "name","description","minutes","hours","day_of_month","month","day_of_week","pay_from_wallet_id","pay_to","currency","amount",
+        "name",
+        "description",
+        "minutes",
+        "hours",
+        "day_of_month",
+        "month",
+        "day_of_week",
+        "pay_from_wallet_id",
+        "pay_to",
+        "currency",
+        "amount",
     ]
 
     __sort_fields__ = [
@@ -56,7 +65,6 @@ class JobConfigFilters(FilterModel):
         "pay_to",
         "currency",
         "amount",
-        
         "created_at",
         "updated_at",
     ]
@@ -74,7 +82,6 @@ class CreateJobRun(BaseModel):
     status_text: str | None
     duration_seconds: int
     payment_hash: str
-    
 
 
 class JobRun(BaseModel):
@@ -85,16 +92,18 @@ class JobRun(BaseModel):
     status_text: str | None
     duration_seconds: int
     payment_hash: str
-    
+
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
-
-
 class JobRunFilters(FilterModel):
     __search_fields__ = [
-        "name","success","status_text","duration_seconds","payment_hash",
+        "name",
+        "success",
+        "status_text",
+        "duration_seconds",
+        "payment_hash",
     ]
 
     __sort_fields__ = [
@@ -103,7 +112,6 @@ class JobRunFilters(FilterModel):
         "status_text",
         "duration_seconds",
         "payment_hash",
-        
         "created_at",
         "updated_at",
     ]
@@ -115,7 +123,6 @@ class JobRunFilters(FilterModel):
 ############################ Settings #############################
 class ExtensionSettings(BaseModel):
     name: str | None
-    
 
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -126,5 +133,3 @@ class ExtensionSettings(BaseModel):
 
 class UserExtensionSettings(ExtensionSettings):
     id: str
-
-

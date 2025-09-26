@@ -12,33 +12,31 @@ from lnbits.decorators import (
 from lnbits.helpers import generate_filter_params_openapi
 
 from .crud import (
-    create_job_run,
     create_job_config,
-    delete_job_run,
+    create_job_run,
     delete_job_config,
-    get_job_run_by_id,
-    get_job_run_paginated,
+    delete_job_run,
     get_job_config,
     get_job_config_ids_by_user,
     get_job_config_paginated,
-    update_job_run,
+    get_job_run_by_id,
+    get_job_run_paginated,
     update_job_config,
+    update_job_run,
 )
 from .models import (
-    JobRun,
-    JobRunFilters,
-    CreateJobRun,
     CreateJobConfig,
-    ExtensionSettings,  #  
+    CreateJobRun,
+    ExtensionSettings,  #
     JobConfig,
     JobConfigFilters,
+    JobRun,
+    JobRunFilters,
 )
-
 from .services import (
-    get_settings,  #  
-    update_settings,  #  
+    get_settings,  #
+    update_settings,  #
 )
-
 
 job_config_filters = parse_filters(JobConfigFilters)
 job_run_filters = parse_filters(JobRunFilters)
@@ -149,8 +147,6 @@ async def api_create_job_run(
 
     job_run = await create_job_run(job_config_id, data)
     return job_run
-
-
 
 
 @repay_api_router.put(
@@ -282,5 +278,3 @@ async def api_update_extension_settings(
         )
     user_id = "admin" if ExtensionSettings.is_admin_only() else user.id
     return await update_settings(user_id, data)
-
-

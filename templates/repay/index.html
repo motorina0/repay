@@ -2,27 +2,16 @@
 <!--//PAGE FOR THE EXTENSIONS BACKEND IN LNBITS//////-->
 <!--/////////////////////////////////////////////////-->
 
-
-{% extends "base.html" %}
-
-
-{% from "macros.jinja" import window_vars with context %} {% block scripts %} {{
-window_vars(user) }}
-
+{% extends "base.html" %} {% from "macros.jinja" import window_vars with context
+%} {% block scripts %} {{ window_vars(user) }}
 
 <script src="{{ static_url_for('repay/static', path='js/index.js') }}"></script>
-
 
 {% endblock %} {% block page %}
 <div class="row q-col-gutter-md">
   <div class="col-12 col-md-8 col-lg-7 q-gutter-y-md">
-    
-    <q-card
-      id="settingsCard"
-    >
-      <q-card-section
-        class=""
-      >
+    <q-card id="settingsCard">
+      <q-card-section class="">
         <div class="row">
           <div class="col">
             <span class="text-h5">RePay</span>
@@ -40,18 +29,12 @@ window_vars(user) }}
         </div>
       </q-card-section>
     </q-card>
-    
 
     <div class="q-mt-lg">
       <span class="text-h5">Job Config</span>
     </div>
-    <q-card
-      id="jobConfigCard"
-      class="q-mt-xs"
-    >
-      <q-card-section
-        class=""
-      >
+    <q-card id="jobConfigCard" class="q-mt-xs">
+      <q-card-section class="">
         <div class="row items-center no-wrap q-mb-md">
           <div class="col">
             <q-input
@@ -75,7 +58,6 @@ window_vars(user) }}
             </q-input>
           </div>
           <div class="col-auto">
-            
             <q-btn
               @click="showNewJobConfigForm()"
               unelevated
@@ -84,7 +66,7 @@ window_vars(user) }}
             >
               New Job Config
             </q-btn>
-            
+
             <q-btn
               flat
               color="grey"
@@ -116,7 +98,6 @@ window_vars(user) }}
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td auto-width>
-                 
                 <q-btn
                   flat
                   dense
@@ -128,7 +109,7 @@ window_vars(user) }}
                 >
                   <q-tooltip> Edit </q-tooltip>
                 </q-btn>
-                
+
                 <q-btn
                   flat
                   dense
@@ -157,13 +138,8 @@ window_vars(user) }}
     <div class="q-mt-lg">
       <span class="text-h5">Job Run</span>
     </div>
-    <q-card
-      id="jobRunCard"
-      class="q-mt-xs"
-    >
-      <q-card-section
-        class=""
-      >
+    <q-card id="jobRunCard" class="q-mt-xs">
+      <q-card-section class="">
         <div class="row items-center no-wrap q-mb-md">
           <div class="col">
             <q-input
@@ -229,7 +205,6 @@ window_vars(user) }}
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td auto-width>
-                
                 <q-btn
                   flat
                   dense
@@ -255,13 +230,11 @@ window_vars(user) }}
       </q-card-section>
     </q-card>
   </div>
-  
+
   <div class="col-12 col-md-4 col-lg-5 q-gutter-y-md">
     <q-card>
       <q-card-section>
-        <h6 class="text-subtitle1 q-my-none">
-          {{SITE_TITLE}} RePay
-        </h6>
+        <h6 class="text-subtitle1 q-my-none">{{SITE_TITLE}} RePay</h6>
         <p>Schedule repetitive payments</p>
       </q-card-section>
       <q-card-section class="q-pa-none">
@@ -274,7 +247,6 @@ window_vars(user) }}
       </q-card-section>
     </q-card>
   </div>
-  
 
   <!--/////////////////////////////////////////////////-->
   <!--//////////////FORM DIALOG////////////////////////-->
@@ -286,15 +258,15 @@ window_vars(user) }}
       class="q-pa-lg q-pt-xl lnbits__dialog-card q-col-gutter-md"
     >
       <span class="text-h5">Settings</span>
-       
-<q-input
-  filled
-  dense
-  v-model.trim="settingsFormDialog.data.name"
-  label="Name"
-  hint="  (optional)"
-></q-input>
- 
+
+      <q-input
+        filled
+        dense
+        v-model.trim="settingsFormDialog.data.name"
+        label="Name"
+        hint="  (optional)"
+      ></q-input>
+
       <div class="row q-mt-lg">
         <q-btn @click="updateSettings" unelevated color="primary" type="submit"
           >Update</q-btn
@@ -311,103 +283,117 @@ window_vars(user) }}
     >
       <span class="text-h5">Job Config</span>
 
-       
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.name"
-  label="Name"
-  hint="The name of the cron job "
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.description"
-  label="Description"
-  hint="Detailed description  (optional)"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.minutes"
-  label="Minutes"
-  hint="Allowed Values 0-59 "
-  type="number"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.hours"
-  label="Hours"
-  hint="Allowed Values 0-23 "
-  type="number"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.day_of_month"
-  label="Day of month"
-  hint="Allowed Values 1-31 "
-  type="number"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.month"
-  label="Month"
-  hint="Allowed Values 1-12 or JAN-DEC "
-  type="number"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.day_of_week"
-  label="Day of week"
-  hint="Allowed Values  0-6 or SUN-SAT "
-  type="number"
-></q-input>
-  
-<q-select
-  filled
-  dense
-  emit-value
-  v-model="jobConfigFormDialog.data.pay_from_wallet_id"
-  :options="g.user.walletOptions"
-  label="Wallet  * "
-></q-select>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.pay_to"
-  label="Pay to"
-  hint="Pay to LNAddress or LNURLP "
-></q-input>
-  
-<q-select
-  filled
-  dense
-  v-model="jobConfigFormDialog.data.currency"
-  label="Currency"
-  hint="The conversion will take place at the time of payment "
-  :options="currencyOptions"
-></q-select>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="jobConfigFormDialog.data.amount"
-  label="Amount"
-  hint="Amount in currency "
-  type="number"
-></q-input>
- 
+      <q-input
+        filled
+        dense
+        v-model.trim="jobConfigFormDialog.data.name"
+        label="Name"
+        hint="The name of the cron job "
+      ></q-input>
+
+      <q-input
+        filled
+        dense
+        v-model.trim="jobConfigFormDialog.data.description"
+        label="Description"
+        hint="Detailed description  (optional)"
+      ></q-input>
+
+      <div class="row">
+        <div class="col-4">
+          <q-input
+            filled
+            dense
+            v-model.trim="jobConfigFormDialog.data.day_of_week"
+            label="Day of week"
+            hint="Allowed Values  0-6 or SUN-SAT "
+            type="number"
+            class="q-pr-sm"
+          ></q-input>
+        </div>
+
+        <div class="col-4">
+          <q-input
+            filled
+            dense
+            v-model.trim="jobConfigFormDialog.data.day_of_month"
+            label="Day of month"
+            hint="Allowed Values 1-31 "
+            type="number"
+            class="q-pr-sm"
+          ></q-input>
+        </div>
+        <div class="col-4">
+          <q-input
+            filled
+            dense
+            v-model.trim="jobConfigFormDialog.data.month"
+            label="Month"
+            hint="Allowed Values 1-12 or JAN-DEC "
+            type="number"
+            class="q-pr-sm"
+          ></q-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <q-input
+            filled
+            dense
+            v-model.trim="jobConfigFormDialog.data.hours"
+            label="Hours"
+            hint="Allowed Values 0-23 "
+            type="number"
+            class="q-pr-sm"
+          ></q-input>
+        </div>
+        <div class="col-4">
+          <q-input
+            filled
+            dense
+            v-model.trim="jobConfigFormDialog.data.minutes"
+            label="Minutes"
+            hint="Allowed Values 0-59 "
+            type="number"
+            class="q-pr-sm"
+          ></q-input>
+        </div>
+      </div>
+
+      <q-input
+        filled
+        dense
+        v-model.trim="jobConfigFormDialog.data.pay_to"
+        label="Pay to"
+        hint="Pay to LNAddress or LNURLP"
+      ></q-input>
+
+      <div class="row">
+        <div class="col-6">
+          <q-select
+            filled
+            dense
+            v-model="jobConfigFormDialog.data.currency"
+            label="Currency"
+            hint="The conversion will take place at the time of payment"
+            :options="currencyOptions"
+            class="q-pr-sm"
+          ></q-select>
+        </div>
+        <div class="col-6">
+          <q-input
+            filled
+            dense
+            v-model.trim="jobConfigFormDialog.data.amount"
+            label="Amount"
+            hint="Amount in currency "
+            type="number"
+          ></q-input>
+        </div>
+      </div>
+
       <div class="row q-mt-lg">
         <q-btn @click="saveJobConfig" unelevated color="primary">
           <span v-if="jobConfigFormDialog.data.id">Update</span>
@@ -417,6 +403,5 @@ window_vars(user) }}
       </div>
     </q-card>
   </q-dialog>
-
 </div>
 {% endblock %}

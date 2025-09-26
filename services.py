@@ -1,22 +1,14 @@
 from lnbits.core.models import Payment
-from lnbits.core.services import create_invoice
 from loguru import logger
 
 from .crud import (
-    create_job_run,
-    create_extension_settings,  #  
-    get_job_run_by_id,
-    get_extension_settings,  #  
-    get_job_config_by_id,
-    update_job_run,
-    update_extension_settings,  #  
+    create_extension_settings,  #
+    get_extension_settings,  #
+    update_extension_settings,  #
 )
 from .models import (
-    CreateJobRun,
-    ExtensionSettings,  #  
+    ExtensionSettings,  #
 )
-
-
 
 
 async def payment_received_for_job_run(payment: Payment) -> bool:
@@ -39,5 +31,3 @@ async def update_settings(user_id: str, data: ExtensionSettings) -> ExtensionSet
         settings = await update_extension_settings(user_id, data)
 
     return settings
-
-

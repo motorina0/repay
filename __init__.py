@@ -9,9 +9,7 @@ from .tasks import wait_for_paid_invoices
 from .views import repay_generic_router
 from .views_api import repay_api_router
 
-repay_ext: APIRouter = APIRouter(
-    prefix="/repay", tags=["RePay"]
-)
+repay_ext: APIRouter = APIRouter(prefix="/repay", tags=["RePay"])
 repay_ext.include_router(repay_generic_router)
 repay_ext.include_router(repay_api_router)
 

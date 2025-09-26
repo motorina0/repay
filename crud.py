@@ -5,14 +5,14 @@ from lnbits.db import Database, Filters, Page
 from lnbits.helpers import urlsafe_short_hash
 
 from .models import (
-    JobRun,
-    JobRunFilters,
-    CreateJobRun,
     CreateJobConfig,
-    ExtensionSettings,  #  
+    CreateJobRun,
+    ExtensionSettings,  #
     JobConfig,
     JobConfigFilters,
-    UserExtensionSettings,  #  
+    JobRun,
+    JobRunFilters,
+    UserExtensionSettings,  #
 )
 
 db = Database("ext_repay")
@@ -203,5 +203,3 @@ async def update_extension_settings(user_id: str, data: ExtensionSettings) -> Ex
     settings = UserExtensionSettings(**data.dict(), id=user_id)
     await db.update("repay.extension_settings", settings)
     return settings
-
-
